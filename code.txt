@@ -1,0 +1,53 @@
+import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+
+imgDataTraining = cv2.imread('data/digits2.png')
+objectIdentifier = cv2.imread('data/So9_1.jpg')
+
+plt.imshow(imgDataTraining)
+plt.show()
+
+
+listImage = [np.hsplit(row, 75) for row in np.vsplit(imgDataTraining, 75)]
+
+plt.imshow(listImage[20][40])
+plt.show()
+
+imgDataTrainingArrayNumpy= np.array(listImage)
+
+objectIdentifierNumpy= np.array(objectIdentifier)
+
+print(imgDataTrainingArrayNumpy.size)
+print(objectIdentifierNumpy.size)
+
+
+dataTraining = imgDataTrainingArrayNumpy[:70,:].reshape(-1,400).astype(np.float32)
+
+dataTest = objectIdentifierNumpy.reshape(-1,400).astype(np.float32)
+
+plt.imshow(dataTest)
+plt.show()
+print(dataTraining.size)
+
+label = np.arange(10)
+listLabel = np.repeat(label,1575)[:,np.newaxis]
+
+print(label)
+print(dataTraining.size)
+
+print(listLabel)
+
+print(listLabel.size)
+
+
+knn = cv2.ml.KNearest_create() 
+
+knn.train(dataTraining, 0, listLabel)
+numberOfNeighbors = np.random.randint(10,20);
+
+temp, ketqua, hangxom, khoangcach = knn.findNearest(dataTest,numberOfNeighbors)
+print(numberOfNeighbors);
+print(ketqua);
+print(hangxom);
+
